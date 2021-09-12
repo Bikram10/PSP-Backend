@@ -1,10 +1,9 @@
 package com.bikram.appliedproject.domain.product;
 
-import com.bikram.appliedproject.domain.category.Category;
+import com.bikram.appliedproject.domain.category.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Product {
@@ -13,97 +12,130 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long product_id;
 
+    private String brand;
+
     private String product_name;
 
+    private String SKU;
+
+    private String category;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_product")
+    @JoinColumn(name = "product_type")
     @JsonIgnore
-    private Category category;
-
-    @OneToMany(mappedBy = "product")
-    @JsonIgnore
-    private Set<Attributes> attributes;
-
-    private String product_description;
-
-    private double product_price;
-
-    private int product_quantity;
+    private Type type;
 
     @Enumerated(EnumType.STRING)
     private StockStatus stockStatus;
 
+    private String description;
+
+    private double price;
+
+    private int quantity;
+
     private String product_img_url;
+
+    public Product() {
+    }
+
+    public Product(long product_id, String brand, String product_name, String SKU, String category, Type type, String description, double price, int quantity) {
+        this.product_id = product_id;
+        this.brand = brand;
+        this.product_name = product_name;
+        this.SKU = SKU;
+        this.category = category;
+        this.type = type;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
 
     public long getProduct_id() {
         return product_id;
-    }
-
-    public String getProduct_name() {
-        return product_name;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public String getProduct_description() {
-        return product_description;
-    }
-
-    public double getProduct_price() {
-        return product_price;
-    }
-
-    public int getProduct_quantity() {
-        return product_quantity;
-    }
-
-    public StockStatus getStockStatus() {
-        return stockStatus;
-    }
-
-    public String getProduct_img_url() {
-        return product_img_url;
     }
 
     public void setProduct_id(long product_id) {
         this.product_id = product_id;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
     public void setProduct_name(String product_name) {
         this.product_name = product_name;
     }
 
-    public void setCategory(Category category) {
+    public String getSKU() {
+        return SKU;
+    }
+
+    public void setSKU(String SKU) {
+        this.SKU = SKU;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public void setProduct_description(String product_description) {
-        this.product_description = product_description;
+    public Type getType() {
+        return type;
     }
 
-    public void setProduct_price(double product_price) {
-        this.product_price = product_price;
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public void setProduct_quantity(int product_quantity) {
-        this.product_quantity = product_quantity;
+    public StockStatus getStockStatus() {
+        return stockStatus;
     }
 
     public void setStockStatus(StockStatus stockStatus) {
         this.stockStatus = stockStatus;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getProduct_img_url() {
+        return product_img_url;
+    }
+
     public void setProduct_img_url(String product_img_url) {
         this.product_img_url = product_img_url;
-    }
-
-    public Set<Attributes> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Set<Attributes> attributes) {
-        this.attributes = attributes;
     }
 }

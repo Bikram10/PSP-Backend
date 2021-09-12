@@ -29,11 +29,11 @@ public class AuthenticationController {
 
     @PostMapping(value = "/generated-token")
     public ResponseEntity<AuthToken> register(@RequestBody LoginUser loginUser) throws Exception{
-        final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
+        final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        final User user = userService.findOne(loginUser.getUsername());
+        final User user = userService.findOne(loginUser.getEmail());
 
         final String token = jwtTokenUtil.generateToken(authentication);
 

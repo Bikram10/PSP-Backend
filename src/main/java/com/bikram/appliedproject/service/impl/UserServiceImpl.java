@@ -30,13 +30,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(s);
+        System.out.println(s);
+        User user = userRepository.findByEmail(s);
 
         if(user == null){
             throw new UsernameNotFoundException("Invalid Username or password");
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthority(user));
     }
 
     private Collection<? extends GrantedAuthority> getAuthority(User user) {
@@ -65,8 +66,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User findOne(String username) {
-        return userRepository.findByUsername(username);
+    public User findOne(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

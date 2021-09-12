@@ -2,7 +2,7 @@ package com.bikram.appliedproject.domain.authentication;
 
 public class AuthToken {
     private String token;
-    private String username;
+    private String email;
 
     public AuthToken(){
 
@@ -19,11 +19,11 @@ public class AuthToken {
         this.token = token;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

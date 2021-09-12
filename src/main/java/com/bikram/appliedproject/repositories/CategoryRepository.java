@@ -1,7 +1,9 @@
 package com.bikram.appliedproject.repositories;
 
-import com.bikram.appliedproject.domain.category.Category;
+import com.bikram.appliedproject.domain.category.Type;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<Type, Long> {
+
+    Type findByName(String name);
 }

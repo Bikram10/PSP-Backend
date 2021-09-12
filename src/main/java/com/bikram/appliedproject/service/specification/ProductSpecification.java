@@ -18,4 +18,14 @@ public class ProductSpecification {
             }
         };
     }
+
+    public static Specification hasCategory(String category){
+        return new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return criteriaBuilder.like(root.get(Product_.category), "%" + category + "%");
+            }
+        };
+    }
+
 }

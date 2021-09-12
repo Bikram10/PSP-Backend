@@ -1,11 +1,11 @@
 package com.bikram.appliedproject.service.impl;
 
-import com.bikram.appliedproject.domain.category.Category;
+import com.bikram.appliedproject.domain.category.Type;
 import com.bikram.appliedproject.repositories.CategoryRepository;
 import com.bikram.appliedproject.service.CategoryService;
 import com.bikram.appliedproject.service.CloudinaryService;
-import com.bikram.appliedproject.service.dto.CategoryDto;
-import com.bikram.appliedproject.service.mapper.CategoryMapper;
+import com.bikram.appliedproject.service.dto.TypeDto;
+import com.bikram.appliedproject.service.mapper.TypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,21 +20,26 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
 
     @Autowired
-    CategoryMapper categoryMapper;
+    TypeMapper categoryMapper;
 
     @Autowired
     CloudinaryService cloudinaryService;
 
-    public Category save(MultipartFile file, CategoryDto categoryDto) throws IOException {
-        String url = cloudinaryService.upload(file, "category/"+categoryDto.getCategory_id()+"_"+categoryDto.getCategory_name().replace("\\s", "_"));
+    public Type save(MultipartFile file, TypeDto typeDto) throws IOException {
+        String url = cloudinaryService.upload(file, "category/"+ typeDto.getType_id()+"_"+ typeDto.getName().replace("\\s", "_"));
 
-        categoryDto.setCategory_img_url(url);
-        Category category = categoryMapper.DtoToCategory(categoryDto);
-        return categoryRepository.save(category);
+        typeDto.setCategory_img_url(url);
+        Type type = categoryMapper.DtoToCategory(typeDto);
+        return categoryRepository.save(type);
     }
 
     @Override
-    public List<Category> getAll() {
+    public Type findByName(String name) {
+        return categoryRepository.findByName(name);
+    }
+
+    @Override
+    public List<Type> getAll() {
 
         return  categoryRepository.findAll();
     }

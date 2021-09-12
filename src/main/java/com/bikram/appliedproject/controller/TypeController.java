@@ -1,8 +1,8 @@
 package com.bikram.appliedproject.controller;
 
-import com.bikram.appliedproject.domain.category.Category;
+import com.bikram.appliedproject.domain.category.Type;
 import com.bikram.appliedproject.service.CategoryService;
-import com.bikram.appliedproject.service.dto.CategoryDto;
+import com.bikram.appliedproject.service.dto.TypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,21 +12,21 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categoryApi")
+@RequestMapping("/typeApi")
 @CrossOrigin("*")
-public class CategoryController {
+public class TypeController {
 
     @Autowired
     CategoryService categoryService;
 
-    @PostMapping("/category")
-    public ResponseEntity<Category> save(@RequestPart("file") MultipartFile file, @RequestPart("category") CategoryDto categoryDto) throws IOException {
+    @PostMapping("/type")
+    public ResponseEntity<Type> save(@RequestPart("file") MultipartFile file, @RequestPart("category") TypeDto typeDto) throws IOException {
 
-        return ResponseEntity.ok().body(categoryService.save(file, categoryDto));
+        return ResponseEntity.ok().body(categoryService.save(file, typeDto));
     }
 
-    @GetMapping("/listCategory")
-    public ResponseEntity<List<Category>> getAll(){
+    @GetMapping("/listType")
+    public ResponseEntity<List<Type>> getAll(){
         return ResponseEntity.ok().body(categoryService.getAll());
     }
 

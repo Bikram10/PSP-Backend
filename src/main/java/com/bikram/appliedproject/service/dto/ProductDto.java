@@ -1,37 +1,44 @@
 package com.bikram.appliedproject.service.dto;
 
-import java.util.Set;
+import com.bikram.appliedproject.domain.category.Type;
+import com.bikram.appliedproject.domain.product.StockStatus;
+
 
 public class ProductDto {
-        private long product_id;
+    private long product_id;
 
-        private String product_name;
+    private String brand;
 
-        private CategoryDto category;
+    private String product_name;
 
-        private String product_description;
+    private String SKU;
 
-        private double product_price;
+    private String category;
 
-        private int product_quantity;
+    private Type type;
 
-        private String stockStatus;
+    private StockStatus stockStatus;
 
-        private String product_img_url;
+    private String description;
 
-        private Set<AttributeDto> attributes;
+    private double price;
 
+    private int quantity;
 
-    public ProductDto(long product_id, String product_name, CategoryDto category, String product_description, double product_price, int product_quantity, String stockStatus, String product_img_url, Set<AttributeDto> attributes) {
+    public ProductDto(){
+
+    }
+
+    public ProductDto(long product_id, String brand, String product_name, String SKU, String category, Type type, String description, double price, int quantity) {
         this.product_id = product_id;
+        this.brand = brand;
         this.product_name = product_name;
+        this.SKU = SKU;
         this.category = category;
-        this.product_description = product_description;
-        this.product_price = product_price;
-        this.product_quantity = product_quantity;
-        this.stockStatus = stockStatus;
-        this.product_img_url = product_img_url;
-        this.attributes = attributes;
+        this.type = type;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
     }
 
     public long getProduct_id() {
@@ -42,6 +49,14 @@ public class ProductDto {
         this.product_id = product_id;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
     public String getProduct_name() {
         return product_name;
     }
@@ -50,59 +65,60 @@ public class ProductDto {
         this.product_name = product_name;
     }
 
-    public CategoryDto getCategory() {
+    public String getSKU() {
+        return SKU;
+    }
+
+    public void setSKU(String SKU) {
+        this.SKU = SKU;
+    }
+
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(CategoryDto category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public String getProduct_description() {
-        return product_description;
+    public Type getType() {
+        return type;
     }
 
-    public void setProduct_description(String product_description) {
-        this.product_description = product_description;
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public double getProduct_price() {
-        return product_price;
-    }
-
-    public void setProduct_price(double product_price) {
-        this.product_price = product_price;
-    }
-
-    public int getProduct_quantity() {
-        return product_quantity;
-    }
-
-    public void setProduct_quantity(int product_quantity) {
-        this.product_quantity = product_quantity;
-    }
-
-    public String getStockStatus() {
+    public StockStatus getStockStatus() {
         return stockStatus;
     }
 
-    public void setStockStatus(String stockStatus) {
+    public void setStockStatus(StockStatus stockStatus) {
         this.stockStatus = stockStatus;
     }
 
-    public String getProduct_img_url() {
-        return product_img_url;
+    public String getDescription() {
+        return description;
     }
 
-    public Set<AttributeDto> getAttributes() {
-        return attributes;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setAttributes(Set<AttributeDto> attributes) {
-        this.attributes = attributes;
+    public double getPrice() {
+        return price;
     }
 
-    public void setProduct_img_url(String product_img_url) {
-        this.product_img_url = product_img_url;
+    public void setPrice(double price) {
+        this.price = price;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
 }
