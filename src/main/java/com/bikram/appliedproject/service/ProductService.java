@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface ProductService {
 
-    ProductDto save(MultipartFile file, ProductDto productDto) throws IOException;
-
     List<ProductDto> saveCSV(MultipartFile file) throws IOException;
 
     List<Product> getAll();
@@ -25,5 +23,10 @@ public interface ProductService {
 
     void updateProduct(ProductDto productDto, MultipartFile file) throws IOException;
 
+    List<Product> getFilterData(MultiValueMap<String, String> query);
+
     void deleteProduct(String productId);
+
+    Page<Product> getProductByType(String typeId, int page, int size);
+
 }

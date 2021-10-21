@@ -1,10 +1,14 @@
 package com.bikram.appliedproject.service.dto;
 
 import com.bikram.appliedproject.domain.category.Type;
+import com.bikram.appliedproject.domain.product.ImageUrls;
 import com.bikram.appliedproject.domain.product.StockStatus;
 
+import java.time.Instant;
+import java.util.Set;
 
-public class ProductDto {
+
+public class ProductDto{
     private long product_id;
 
     private String brand;
@@ -19,17 +23,27 @@ public class ProductDto {
 
     private StockStatus stockStatus;
 
+    private String short_description;
+
     private String description;
 
     private double price;
 
     private int quantity;
 
+    private Set<ImageUrls> product_img_url;
+
+    private boolean clearance;
+
+    private Instant created_at;
+
+    private int rate;
+
     public ProductDto(){
 
     }
 
-    public ProductDto(long product_id, String brand, String product_name, String SKU, String category, Type type, String description, double price, int quantity) {
+    public ProductDto(long product_id, String brand, String product_name, String SKU, String category, Type type, String description, StockStatus stockStatus, Set<ImageUrls> imageUrls, double price, int quantity, boolean clearance) {
         this.product_id = product_id;
         this.brand = brand;
         this.product_name = product_name;
@@ -39,6 +53,9 @@ public class ProductDto {
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.stockStatus = stockStatus;
+        this.clearance = clearance;
+        this.product_img_url = imageUrls;
     }
 
     public long getProduct_id() {
@@ -121,4 +138,43 @@ public class ProductDto {
         this.quantity = quantity;
     }
 
+    public Set<ImageUrls> getProduct_img_url() {
+        return product_img_url;
+    }
+
+    public void setProduct_img_url(Set<ImageUrls> product_img_url) {
+        this.product_img_url = product_img_url;
+    }
+
+    public boolean isClearance() {
+        return clearance;
+    }
+
+    public void setClearance(boolean clearance) {
+        this.clearance = clearance;
+    }
+
+    public Instant getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Instant created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getShort_description() {
+        return short_description;
+    }
+
+    public void setShort_description(String short_description) {
+        this.short_description = short_description;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
 }

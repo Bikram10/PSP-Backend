@@ -1,6 +1,7 @@
 package com.bikram.appliedproject.domain.category;
 
 import com.bikram.appliedproject.domain.product.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -18,6 +19,7 @@ public class Type {
     private String type_img_url;
 
     @OneToMany(mappedBy= "type")
+    @JsonIgnore
     private Set<Product> items;
 
 
@@ -41,7 +43,7 @@ public class Type {
     }
 
     public void setName(String type_name) {
-        this.name = name;
+        this.name = type_name;
     }
 
     public void setType_img_url(String type_img_url) {

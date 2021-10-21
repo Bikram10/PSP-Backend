@@ -2,7 +2,6 @@ package com.bikram.appliedproject.controller;
 
 import com.bikram.appliedproject.domain.authentication.AuthToken;
 import com.bikram.appliedproject.domain.authentication.LoginUser;
-import com.bikram.appliedproject.domain.authentication.User;
 import com.bikram.appliedproject.security.JwtTokenUtil;
 import com.bikram.appliedproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +27,12 @@ public class AuthenticationController {
     private JwtTokenUtil jwtTokenUtil;
 
     @PostMapping(value = "/generated-token")
-    public ResponseEntity<AuthToken> register(@RequestBody LoginUser loginUser) throws Exception{
+    public ResponseEntity<AuthToken> login(@RequestBody LoginUser loginUser) throws Exception{
         final Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getEmail(), loginUser.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        final User user = userService.findOne(loginUser.getEmail());
+        //final User user = userService.findOne(loginUser.getEmail());
 
         final String token = jwtTokenUtil.generateToken(authentication);
 

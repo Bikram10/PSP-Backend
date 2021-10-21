@@ -28,7 +28,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 "invalidate", true
         );
 
-        File file = new File(multipartFile.getOriginalFilename());
+        File file = new File(multipartFile.getName());
         file.createNewFile();
 
         FileOutputStream fos = new FileOutputStream(file);
@@ -39,6 +39,20 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         Cloudinary cloudinary = cloudinaryConfig.getCloudinary();
         Map uploadResult = cloudinary.uploader().upload(file, params);
         file.delete();
+        return uploadResult.get("public_id").toString();
+    }
+
+    @Override
+    public String uploadImage(String url, String filename) throws IOException {
+        Map params = ObjectUtils.asMap(
+                "public_id",  filename,
+                "overwrite", true,
+                "resource_type", "auto",
+                "invalidate", true
+        );
+
+        Cloudinary cloudinary = cloudinaryConfig.getCloudinary();
+        Map uploadResult = cloudinary.uploader().upload(url, params);
         return uploadResult.get("public_id").toString();
     }
 

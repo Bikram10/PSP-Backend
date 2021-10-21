@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    Type save(MultipartFile file, TypeDto typeDto) throws IOException;
+    TypeDto save(MultipartFile file, TypeDto typeDto) throws IOException;
 
     Type findByName(String name);
 

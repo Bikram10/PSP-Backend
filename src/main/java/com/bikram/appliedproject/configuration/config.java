@@ -5,6 +5,7 @@ import com.bikram.appliedproject.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -54,8 +55,20 @@ public class config extends WebSecurityConfigurerAdapter {
                 .antMatchers("/token/*").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/listUser").permitAll()
-                .antMatchers("/categoryApi/*").permitAll()
+                .antMatchers("/typeApi/*").permitAll()
+                .antMatchers("/productUserApi/*").permitAll()
                 .antMatchers("/productApi/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/homeApi/*").permitAll()
+                .antMatchers("/productApi/paging").permitAll()
+                .antMatchers("/homeApi/product-info/*").permitAll()
+                .antMatchers("/cartApi/listCart").permitAll()
+                .antMatchers("/cartApi/*").permitAll()
+                .antMatchers("/cartApi/listCart").permitAll()
+                .antMatchers("/stripeApi/*").permitAll()
+                .antMatchers("/shippingApi/*").permitAll()
+                .antMatchers("/confirm").permitAll()
+                .antMatchers("/homeApi/demo").permitAll()
+                .antMatchers("/paypalApi/complete/payment").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticatioEntry).and()

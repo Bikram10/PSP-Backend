@@ -20,7 +20,7 @@ public class TypeController {
     CategoryService categoryService;
 
     @PostMapping("/type")
-    public ResponseEntity<Type> save(@RequestPart("file") MultipartFile file, @RequestPart("category") TypeDto typeDto) throws IOException {
+    public ResponseEntity<TypeDto> save(@RequestPart("file") MultipartFile file, @RequestPart("category") TypeDto typeDto) throws IOException {
 
         return ResponseEntity.ok().body(categoryService.save(file, typeDto));
     }

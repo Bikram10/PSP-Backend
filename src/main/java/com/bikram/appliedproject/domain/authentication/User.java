@@ -1,5 +1,7 @@
 package com.bikram.appliedproject.domain.authentication;
 
+import com.bikram.appliedproject.domain.cart.Cart;
+import com.bikram.appliedproject.domain.order.Shipping;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -26,7 +28,20 @@ public class User {
     @JsonIgnore
     private Set<Role> roles;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Cart cart;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Shipping> shippingSet;
+
+    private boolean enabled;
+
+
+    public User(){
+        super();
+        this.enabled = false;
+    }
 
     public Long getUser_id() {
         return user_id;
@@ -68,4 +83,27 @@ public class User {
         this.email = email;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public Set<Shipping> getShipping() {
+        return shippingSet;
+    }
+
+    public void setShipping(Set<Shipping> shipping) {
+        this.shippingSet = shipping;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }

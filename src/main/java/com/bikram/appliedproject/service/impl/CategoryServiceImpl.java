@@ -25,12 +25,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CloudinaryService cloudinaryService;
 
-    public Type save(MultipartFile file, TypeDto typeDto) throws IOException {
-        String url = cloudinaryService.upload(file, "category/"+ typeDto.getType_id()+"_"+ typeDto.getName().replace("\\s", "_"));
-
-        typeDto.setCategory_img_url(url);
+    public TypeDto save(MultipartFile file, TypeDto typeDto) throws IOException {
         Type type = categoryMapper.DtoToCategory(typeDto);
-        return categoryRepository.save(type);
+
+        String url = cloudinaryService.upload(file, "category/"+ type.getType_id()+"_"+ typeDto.getName().replace("\\s", "_"));
+
+        type.setType_img_url(url);
+
+        type = categoryRepository.save(type);
+        return categoryMapper.categoryToDto(type);
     }
 
     @Override

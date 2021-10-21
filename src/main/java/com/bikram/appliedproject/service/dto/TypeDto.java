@@ -8,6 +8,13 @@ public class TypeDto {
 
     private String url;
 
+    public TypeDto(){
+
+    }
+    public TypeDto(String name){
+        this.name = name;
+    }
+
     public long getType_id() {
         return type_id;
     }
