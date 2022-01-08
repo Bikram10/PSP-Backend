@@ -23,6 +23,14 @@ public class OrderDto {
 
     private ShippingDto shippingDto;
 
+    private String message;
+
+    public OrderDto(){}
+
+    public OrderDto(String msg){
+        this.message = msg;
+    }
+
     public Long getId() {
         return id;
     }

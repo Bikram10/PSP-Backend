@@ -68,7 +68,7 @@ public class CSVHelper {
                     imageUrls = new ImageUrls();
                     imageUrls.setUrl(url);
                     imageUrlsSet.add(imageUrls);
-                    }
+                }
                 productDto.setProduct_img_url(imageUrlsSet);
                     productDtos.add(productDto);
             }

@@ -26,6 +26,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent onRegistrationCompleteEvent) {
+        System.out.println(onRegistrationCompleteEvent.getUserDto().getEmail());
         this.confirmRegistration(onRegistrationCompleteEvent);
     }
 
@@ -35,16 +36,12 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         String token = UUID.randomUUID().toString();
         userService.createVerificationToken(user, token);
 
-        String recepientAddress = user.getEmail();
-        String subject = "Registration Confirmation";
-        String confirmationUrl = event.getAppUrl() + "/confirm?token="+token;
-
-        String message = messageSource.getMessage("message.regSucc", null, event.getLocale());
-
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(recepientAddress);
-        simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
-        javaMailSender.send(simpleMailMessage);
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(user.getEmail());
+        mailMessage.setSubject("Complete Registration!");
+        mailMessage.setFrom("sbikrm@gmail.com");
+        mailMessage.setText("To confirm your account, please click here : "
+                +"http://localhost:8080/confirm?token="+token);
+        javaMailSender.send(mailMessage);
     }
 }

@@ -28,7 +28,6 @@ public class Order {
     private Set<OrderItem> orderItems;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
     private Shipping shipping;
 
     @Enumerated(EnumType.STRING)

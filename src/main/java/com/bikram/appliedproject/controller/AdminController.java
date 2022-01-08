@@ -3,6 +3,7 @@ package com.bikram.appliedproject.controller;
 import com.bikram.appliedproject.domain.product.Product;
 import com.bikram.appliedproject.repositories.ProductRepository;
 import com.bikram.appliedproject.service.ProductService;
+import com.bikram.appliedproject.service.UserService;
 import com.bikram.appliedproject.service.dto.ProductDto;
 import com.bikram.appliedproject.service.helper.CSVHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class AdminController {
 
     @Autowired
     ProductRepository pagingRepository ;
+
+    @Autowired
+    UserService userService;
 
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -72,7 +76,7 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/product/update")
-    public void updateProduct(@RequestPart("product") ProductDto productDto, @RequestPart("file") MultipartFile file) throws IOException {
+    public void updateProduct(@RequestPart("product") ProductDto productDto, @RequestPart(value = "file[]", required = false) MultipartFile[] file) throws IOException {
         productService.updateProduct(productDto, file);
     }
 }

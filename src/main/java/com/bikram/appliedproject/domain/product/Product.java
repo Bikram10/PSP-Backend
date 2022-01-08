@@ -55,7 +55,7 @@ public class Product extends AbstractAuditingEntity {
     public Product() {
     }
 
-    public Product(long product_id, String brand, String product_name, String SKU, String category, Type type, String description, StockStatus stockStatus, double price, Set<ImageUrls> product_img_url, int quantity, boolean clearance, int view) {
+    public Product(long product_id, String brand, String product_name, String SKU, String category, Type type, String short_description, String description, StockStatus stockStatus, double price, Set<ImageUrls> product_img_url, int quantity, boolean clearance, int view) {
         this.product_id = product_id;
         this.brand = brand;
         this.product_name = product_name;
@@ -69,6 +69,7 @@ public class Product extends AbstractAuditingEntity {
         this.clearance = clearance;
         this.view = view;
         this.product_img_url = product_img_url;
+        this.short_description = short_description;
     }
 
     public long getProduct_id() {

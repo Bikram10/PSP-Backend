@@ -21,7 +21,7 @@ public interface ProductService {
 
     ProductDto getProductById(long id);
 
-    void updateProduct(ProductDto productDto, MultipartFile file) throws IOException;
+    void updateProduct(ProductDto productDto, MultipartFile[] files) throws IOException;
 
     List<Product> getFilterData(MultiValueMap<String, String> query);
 

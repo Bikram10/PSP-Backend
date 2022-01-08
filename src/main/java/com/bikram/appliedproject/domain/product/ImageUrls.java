@@ -11,6 +11,12 @@ public class ImageUrls {
 
     private String url;
 
+
+    public ImageUrls(){}
+
+    public ImageUrls(String url){
+        this.url = url;
+    }
     public long getId() {
         return id;
     }

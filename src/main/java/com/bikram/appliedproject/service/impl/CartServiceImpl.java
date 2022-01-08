@@ -13,6 +13,7 @@ import com.bikram.appliedproject.service.dto.CartItemDto;
 import com.bikram.appliedproject.service.exception.BadRequestException;
 import com.bikram.appliedproject.service.mapper.CartMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -120,12 +121,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Integer getCartTotal() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByEmail(userDetails.getUsername());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByEmail(username);
         if(user !=null) {
             Optional<Cart> cartOptional = cartRepository.findByUser(user.getUser_id());
             Cart cart = cartOptional.isPresent() ? cartOptional.get() : null;
-            Set<CartItem> cartItems = cart.getCartItems();
+            Set<CartItem> cartItems = cart == null ? new HashSet<>() : cart.getCartItems();
             return cartItems.size();
         }
 

@@ -63,66 +63,66 @@ public class OrderServiceImpl implements OrderService {
     private ShippingRepository shippingRepository;
 
     @Override
-    public OrderDto placeOrder() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByEmail(userDetails.getUsername());
+    public OrderDto placeOrder(){
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userRepository.findByEmail(userDetails.getUsername());
 
-        Optional<Cart> optionalCart = cartRepository.findByUser(user.getUser_id());
-        Cart cart = optionalCart.isPresent()? optionalCart.get() : null;
-
-        Optional<Order> optionalOrder = orderRepository.findByUser(user.getUser_id());
-        Order existOrder = optionalOrder.isPresent() ? optionalOrder.get() : null;
-
-        if(existOrder !=null)
-            return null;
-        Order order = new Order();
-
-        order.setUser(user);
-
-        Double grandTotal = 0.0;
-        Double subtotal = 0.0;
+            Optional<Cart> optionalCart = cartRepository.findByUser(user.getUser_id());
+            Cart cart = optionalCart.isPresent() ? optionalCart.get() : null;
 
         Set<CartItem> cartItems = cart.getCartItems();
-        Set<OrderItem> orderItemList = new HashSet<>();
-        Set<CartItem> items = new HashSet<>();
-        for (CartItem cartItem : cartItems) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(cartItem.getProduct());
-            orderItem.setQuantity(cartItem.getQuantity());
 
-            orderItem.setTotal(cartItem.getProduct().getPrice() * orderItem.getQuantity());
-            subtotal += orderItem.getTotal();
+        if(cartItems.size() == 0)
+            return null;
 
-            cartItem.setProduct(null);
-            orderItemRepository.save(orderItem);
+        System.out.println(cartItems.size());
+        Order order = new Order();
 
-            orderItemList.add(orderItem);
-            cartItems.remove(cartItem);
-        }
+            order.setUser(user);
 
-        cartItems.forEach(cartItem -> cartItemRepository.delete(cartItem));
-        cartRepository.save(cart);
+            Double grandTotal = 0.0;
+            Double subtotal = 0.0;
 
-        grandTotal = subtotal + 0;
+            Set<OrderItem> orderItemList = new HashSet<>();
+            Set<CartItem> items = new HashSet<>();
+            for (CartItem cartItem : cartItems) {
+                OrderItem orderItem = new OrderItem();
+                orderItem.setProduct(cartItem.getProduct());
+                orderItem.setQuantity(cartItem.getQuantity());
 
-        order.setOrderItems(orderItemList);
-        order.setSubTotal(subtotal);
-        order.setGrandTotal(grandTotal);
-        order.setOrderStatus(OrderStatus.pending);
-        cart.setCartItems(new HashSet<>());
-        order = orderRepository.save(order);
+                orderItem.setTotal(cartItem.getProduct().getPrice() * orderItem.getQuantity());
+                subtotal += orderItem.getTotal();
 
-        Optional<Shipping> shippingDto = shippingRepository.findByUser(user.getUser_id());
-        Shipping shipping = shippingDto.isPresent() ? shippingDto.get() : null;
+                cartItem.setProduct(null);
+                orderItemRepository.save(orderItem);
 
-        order.setShipping(shipping);
+                orderItemList.add(orderItem);
+                cartItems.remove(cartItem);
+            }
+
+            cartItems.forEach(cartItem -> cartItemRepository.delete(cartItem));
+            cartRepository.save(cart);
+
+            grandTotal = subtotal + 0;
+
+            order.setOrderItems(orderItemList);
+            order.setSubTotal(subtotal);
+            order.setGrandTotal(grandTotal);
+            order.setOrderStatus(OrderStatus.pending);
+            cart.setCartItems(new HashSet<>());
+            order = orderRepository.save(order);
+
+            Optional<Shipping> shippingDto = shippingRepository.findByUser(user.getUser_id());
+            Shipping shipping = shippingDto.isPresent() ? shippingDto.get() : null;
+
+            order.setShipping(shipping);
 
 
-        order = orderRepository.save(order);
+            order = orderRepository.save(order);
 
-        items.forEach(cartItem -> cartItemRepository.delete(cartItem));
+            items.forEach(cartItem -> cartItemRepository.delete(cartItem));
 
-        return orderMapper.orderToDto(order);
+            return orderMapper.orderToDto(order);
     }
 
     @Override
@@ -154,5 +154,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrderList() {
         return (List<Order>) orderRepository.findAll();
+    }
+
+    @Override
+    public void updateStatus(String status, Long orderId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        Order order = optionalOrder.isPresent() ? optionalOrder.get() : null;
+
+        OrderStatus orderStatus = OrderStatus.valueOf(status);
+        order.setOrderStatus(orderStatus);
+
+        orderRepository.save(order);
+
     }
 }

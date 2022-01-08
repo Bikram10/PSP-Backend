@@ -15,4 +15,6 @@ public interface OrderService {
     List<Order> getOrderList();
 
     ProductDto saveRating(ProductDto orderItemDto, Integer rate);
+
+    void updateStatus(String orderStatus, Long orderId);
 }

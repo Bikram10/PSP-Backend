@@ -9,14 +9,23 @@ public class UserDto {
 
     private String username;
 
+    private String password;
+
     private String email;
 
-    private String password;
 
     private Set<RolesDto> roles;
 
     private boolean enabled;
 
+    public UserDto(){
+
+    }
+    public UserDto(Long user_id, String username, String email) {
+        this.user_id = user_id;
+        this.username = username;
+        this.email = email;
+    }
     public UserDto(Long user_id, String username, String email, String password, Set<RolesDto> roles) {
         this.user_id = user_id;
         this.username = username;
@@ -41,13 +50,6 @@ public class UserDto {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getEmail() {
         return email;
@@ -71,5 +73,13 @@ public class UserDto {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

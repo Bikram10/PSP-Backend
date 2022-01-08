@@ -43,13 +43,14 @@ public class ProductDto{
 
     }
 
-    public ProductDto(long product_id, String brand, String product_name, String SKU, String category, Type type, String description, StockStatus stockStatus, Set<ImageUrls> imageUrls, double price, int quantity, boolean clearance) {
+    public ProductDto(long product_id, String brand, String product_name, String SKU, String category, Type type, String short_description, String description, StockStatus stockStatus, Set<ImageUrls> imageUrls, double price, int quantity, boolean clearance) {
         this.product_id = product_id;
         this.brand = brand;
         this.product_name = product_name;
         this.SKU = SKU;
         this.category = category;
         this.type = type;
+        this.short_description = short_description;
         this.description = description;
         this.price = price;
         this.quantity = quantity;

@@ -23,4 +23,15 @@ public interface UserService {
     List<User> findAll();
 
     void savedRegisteredUser(User user);
+
+    UserDto getInformation();
+
+    void changePassword(String password, String oldPassword) throws Exception;
+
+    boolean checkOldPassword(String password, String oldPassword);
+
+    List<UserDto> getAllUser();
+
+    boolean authenticated();
+
 }

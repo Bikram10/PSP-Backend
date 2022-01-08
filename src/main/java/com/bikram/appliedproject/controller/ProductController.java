@@ -20,6 +20,7 @@ public class ProductController {
 
     @GetMapping("/filterData")
     public ResponseEntity<List<Product>> getFilterData(@RequestParam MultiValueMap<String, String> query){
+        System.out.println(query);
         return ResponseEntity.ok().body(productService.getFilterData(query));
     }
 

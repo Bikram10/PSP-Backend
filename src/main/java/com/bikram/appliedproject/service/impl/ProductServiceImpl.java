@@ -22,7 +22,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ImageRepository imageRepository;
+
 
 
     @Override
@@ -83,12 +86,12 @@ public class ProductServiceImpl implements ProductService {
             productDtoList.add(productDto1);
         }
                 List<Product> productList = productDtoList.stream().map(productDto1 ->
-                new Product(productDto1.getProduct_id(), productDto1.getBrand(), productDto1.getProduct_name(), productDto1.getSKU(), productDto1.getCategory(), productDto1.getType(), productDto1.getDescription(), productDto1.getStockStatus(), productDto1.getPrice(), productDto1.getProduct_img_url(), productDto1.getQuantity(), productDto1.isClearance(), 0)).collect(Collectors.toList());
+                new Product(productDto1.getProduct_id(), productDto1.getBrand(), productDto1.getProduct_name(), productDto1.getSKU(), productDto1.getCategory(), productDto1.getType(), productDto1.getShort_description(), productDto1.getDescription(), productDto1.getStockStatus(), productDto1.getPrice(), productDto1.getProduct_img_url(), productDto1.getQuantity(), productDto1.isClearance(), 0)).collect(Collectors.toList());
 
         productList = productRepository.saveAll(productList);
 
         List<ProductDto> productDtoList1 = productList.stream().map(product ->
-                new ProductDto(product.getProduct_id(), product.getBrand(), product.getProduct_name(), product.getSKU(), product.getCategory(), product.getType(), product.getDescription(), product.getStockStatus(), product.getProduct_img_url(), product.getPrice(), product.getQuantity(), product.isClearance())).collect(Collectors.toList());
+                new ProductDto(product.getProduct_id(), product.getBrand(), product.getProduct_name(), product.getSKU(), product.getCategory(), product.getType(), product.getShort_description(), product.getDescription(), product.getStockStatus(), product.getProduct_img_url(), product.getPrice(), product.getQuantity(), product.isClearance())).collect(Collectors.toList());
 
         return productDtoList1;
     }
@@ -124,50 +127,72 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto getProductById(long id) {
         Product product = productRepository.getById(id);
 
+        System.out.println(product.getProduct_img_url().size());
+
         ProductDto productDto = productMapper.productToDto(product);
 
         return productDto;
     }
 
     @Override
-    public void updateProduct(ProductDto productDto, MultipartFile file) throws IOException {
-        Product product = productMapper.DtoToProduct(productDto);
-        product = productRepository.getById(product.getProduct_id());
+    public void updateProduct(ProductDto productDto, MultipartFile[] files) throws IOException {
 
-        String urls = "";
+        Product newProduct = productRepository.getById(productDto.getProduct_id());
+        System.out.println(newProduct.getProduct_id());
+        newProduct.setProduct_name(productDto.getProduct_name());
+        newProduct.setBrand(productDto.getBrand());
+        newProduct.setSKU(productDto.getSKU());
+        newProduct.setCategory(productDto.getCategory());
 
-//        if(file !=null){
-//            urls = cloudinaryService.upload(file, file.getOriginalFilename());
-//        }
-//
-//        if(urls.equals("")){
-//            product.setProduct_img_url(product.getProduct_img_url());
-//        }
-//        else{
-//            //product.setProduct_img_url(urls);
-//        }
+        Type type = categoryRepository.findByName(productDto.getType().getName());
+        categoryRepository.save(type);
+        newProduct.setType(type);
 
-        productRepository.save(product);
+        int i=0;
+        Set<ImageUrls> imageUrlsSet = productDto.getProduct_img_url();
+
+        if(files !=null) {
+            for (MultipartFile file : files) {
+                String fileUrl = cloudinaryService.upload(file, "product/" + productDto.getSKU() + "/" + i++);
+                imageUrlsSet.add(new ImageUrls(fileUrl));
+            }
+        }
+        newProduct.setProduct_img_url(imageUrlsSet);
+        newProduct.setDescription(productDto.getDescription());
+        newProduct.setShort_description(productDto.getShort_description());
+        newProduct.setPrice(productDto.getPrice());
+        newProduct.setQuantity(productDto.getQuantity());
+        newProduct.setStockStatus(productDto.getStockStatus());
+
+        productRepository.save(newProduct);
     }
 
     @Override
     public List<Product> getFilterData(MultiValueMap<String, String> query) {
+        System.out.println(query);
         Specification<Product> productSpecification = Specification.where(null);
         if(query.containsKey("name")) {
+
             productSpecification = productSpecification.and(ProductSpecification.hasName(query.getFirst("name")));
             //productSpecification = productSpecification.and(ProductSpecification.hasBrand(query.getFirst("name")));
         }
         if(query.containsKey("brand")){
+            System.out.println(query.getFirst("brand"));
             productSpecification = productSpecification.and(ProductSpecification.hasBrand(query.getFirst("brand")));
-
         }
         if(query.containsKey("min")){
-            productSpecification = productSpecification.and(ProductSpecification.hasPriceMin(Integer.parseInt(query.getFirst("min"))));
+                productSpecification = productSpecification.and(ProductSpecification.hasPriceMin(Integer.parseInt(query.getFirst("min"))));
         }
         if(query.containsKey("max")){
-            productSpecification = productSpecification.and(ProductSpecification.hasPriceMax(Integer.parseInt(query.getFirst("max"))));
+                productSpecification = productSpecification.and(ProductSpecification.hasPriceMax(Integer.parseInt(query.getFirst("max"))));
+        }
+        if(query.containsKey("category")){
+            Type type = categoryRepository.findByName(query.getFirst("category"));
+            if(type !=null)
+                productSpecification = productSpecification.and(ProductSpecification.hasType(Integer.parseInt(String.valueOf(type.getType_id()))));
         }
         if(query.containsKey("type")){
+
             productSpecification = productSpecification.and(ProductSpecification.hasType(Integer.parseInt(query.getFirst("type"))));
         }
 
